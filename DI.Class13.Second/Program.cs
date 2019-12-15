@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using DI.Class13.Second.Repository.Abstract;
+using DI.Class13.Second.Repository.Concrete;
 using System;
 using System.Reflection;
 
@@ -25,7 +27,11 @@ namespace DI.Class13.Second
         private static IContainer BuildContainer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsSelf().AsImplementedInterfaces();
+            //builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsSelf().AsImplementedInterfaces();
+            builder.RegisterType<Application>();
+            builder.RegisterType<OptionService>().As<IOptionService>();
+            builder.RegisterType<Printer>().As<IPrinter>();
+            builder.RegisterType<InMemoryNumericStore>().As<INumericStore>();
             return builder.Build();
         }
     }
