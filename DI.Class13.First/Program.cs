@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 
 namespace DI.Class13.First
 {
@@ -6,11 +7,23 @@ namespace DI.Class13.First
     {
         static void Main(string[] args)
         {
-            var printer = new Printer();
-            var numericStore = new InMemorynumericStore(printer);
-            var optionService = new OptionsService(numericStore, printer);
-            var application = new Application(optionService,printer);
-            application.Run();
+            var container = BuildContainer();
+            using (var scope = container.BeginLifetimeScope())
+            {
+                scope.Resolve<Application>().Run();
+            }
+        }
+
+        private static IContainer BuildContainer()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<Application>();
+            builder.RegisterType<OptionsService>().As<IOptionsService>();
+            builder.RegisterType<InMemorynumericStore>().As<INumericStore>();
+            builder.RegisterType<Printer>().As<IPrinter>();
+
+            return builder.Build();
         }
     }
 }
