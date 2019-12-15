@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using System;
+using System.Reflection;
 
 namespace DI.Class13.First
 {
@@ -18,10 +19,11 @@ namespace DI.Class13.First
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<Application>();
-            builder.RegisterType<OptionsService>().As<IOptionsService>();
-            builder.RegisterType<InMemorynumericStore>().As<INumericStore>();
-            builder.RegisterType<Printer>().As<IPrinter>();
+            //builder.RegisterType<Application>();
+            //builder.RegisterType<OptionsService>().As<IOptionsService>();
+            //builder.RegisterType<InMemorynumericStore>().As<INumericStore>();
+            //builder.RegisterType<Printer>().As<IPrinter>();
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsSelf().AsImplementedInterfaces();
 
             return builder.Build();
         }
